@@ -4,13 +4,16 @@ FROM python:3
 # update and install
 RUN apt-get update && apt-get install -y \
   curl \
-  openssl \
+  lynx \
   nano \
+  openssl \
+  pandoc \
   wget \
   vim
 
 # copy source
 WORKDIR /usr/src
+COPY README.md .
 COPY tinderGetPhotos.py .
 COPY scrape.sh .
 COPY requirements.txt .
