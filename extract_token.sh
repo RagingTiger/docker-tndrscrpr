@@ -13,5 +13,5 @@ get_token(){
 
 if [ "$1" ]; then
   # get token and export
-  echo "FACEBOOK_TOKEN=$(get_token $1)"
+  echo "$(get_token $1)"
 fi
