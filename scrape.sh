@@ -1,28 +1,36 @@
 #!/bin/bash
 
-# constants
-ENVFILE=.env
+# function
+env_unset(){
+  cat <<- EOF
+One or more of the shell environment variables has not been set. Here are
+the current values of each:
+
+  FACEBOOK_ID: $FACEBOOK_ID
+  FACEBOOK_TOKEN: $FACEBOOK_TOKEN
+  TINDERPICS_DIR: $TINDERPICS_DIR
+
+Look over the values, find the missing one, set it with the built in
+commands (i.e. fbid, fbtoken, picsdir) and try again.
+EOF
+}
 
 # main
 if [ -z "$1" ]; then
-  # setup environment
-  if [ -e "$ENVFILE" ]; then
-    # shellcheck source=./.env
-    source "$ENVFILE"
+  # check shell environment
+  if [ -z "$FACEBOOK_ID" ] || \
+     [ -z "$FACEBOOK_TOKEN" ] || \
+     [ -z "$TINDERPICS_DIR" ]; then
+    # notify env variables unset
+    echo "$(env_unset)" && exit
+
   else
-    fbid=''
-    fbtkn=''
-    echo -n "Please provide FACEBOOK_ID: "
-    read fbid && export FACEBOOK_ID="$fbid"
-    echo -n "Please provide FACEBOOK_TOKEN: "
-    read fbtkn && export FACEBOOK_TOKEN="$fbtkn"
+    # begin scraping
+    python /usr/src/tinderGetPhotos.py
   fi
 
-  # begin scraping
-  python /usr/src/tinderGetPhotos.py
-
   # exit
-  echo "export FACEBOOK_ID=$FACEBOOK_ID"
+  echo "Scraping complete. Image data stored in: $TINDERPICS_DIR"
 
 else
   case "$1" in
