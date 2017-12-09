@@ -38,8 +38,10 @@ RUN echo 'fbtoken(){ if [ "$1" ]; then export FACEBOOK_TOKEN="$1"; fi }' >> \
           ~/.bashrc
 RUN echo 'picsdir(){ if [ "$1" ]; then export TINDERPICS_DIR="$1"; fi }' >> \ 
           ~/.bashrc
-RUN echo 'set_token(){ if [ "$1" ]; then fbtoken $(extract_token "$1"); \
-          fi }' >> ~/.bashrc
+RUN echo 'get_token(){ if [ "$1" ]; then fbtoken $(extract_token "$1"); fi }' \
+          >> ~/.bashrc
+RUN printf "\n# aliases\n" >> ~/.bashrc
+RUN echo "alias set_env='source .env'" >> ~/.bashrc
 
 # make working dir
 RUN mkdir -p /home/tndrscrpr
