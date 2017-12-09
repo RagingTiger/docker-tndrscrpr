@@ -15,6 +15,14 @@ commands (i.e. fbid, fbtoken, picsdir) and try again.
 EOF
 }
 
+export_env(){
+  cat <<- EOF
+export FACEBOOK_ID="$FACEBOOK_ID"
+export FACEBOOK_TOKEN="$FACEBOOK_TOKEN"
+export TINDERPICS_DIR="$TINDERPICS_DIR"
+EOF
+}
+
 # main
 if [ -z "$1" ]; then
   # check shell environment
@@ -35,5 +43,6 @@ if [ -z "$1" ]; then
 else
   case "$1" in
     help|-h) pandoc /usr/src/README.md | lynx -stdin;;
+    env|-e) export_env;;
   esac
 fi
