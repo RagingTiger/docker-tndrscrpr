@@ -44,5 +44,7 @@ else
   case "$1" in
     help|-h) pandoc /usr/src/README.md | lynx -stdin;;
     env|-e) export_env;;
+    token|-t) cat /usr/src/README.md | grep '\[link\]' | \
+              sed 's/\[link\]/      /g' | awk '{print $9}' | sed 's/[()]//g';;
   esac
 fi
