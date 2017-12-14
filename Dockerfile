@@ -30,31 +30,11 @@ RUN ln /usr/src/extract_token.sh /usr/bin/extract_token
 ENV FACEBOOK_TOKEN=''
 ENV FACEBOOK_ID=''
 ENV TINDERPICS_DIR=''
+ENV FBACCOUNT_EMAIL=''
+ENV FBACCOUNT_USERNAME=''
 
-## setup rc file
-# setup functions
-RUN printf "\n# functions for setting shell env variables\n" >> ~/.bashrc
-RUN echo 'fbid(){ if [ "$1" ]; then export FACEBOOK_ID="$1"; fi }' >> ~/.bashrc
-RUN echo 'fbtoken(){ if [ "$1" ]; then export FACEBOOK_TOKEN="$1"; fi }' >> \
-          ~/.bashrc
-RUN echo 'picsdir(){ if [ "$1" ]; then export TINDERPICS_DIR="$1"; fi }' >> \
-          ~/.bashrc
-RUN echo 'get_token(){ if [ "$1" ]; then fbtoken $(extract_token "$1"); fi }' \
-          >> ~/.bashrc
-RUN echo 'write_env(){ if [ "$FACEBOOK_ID" ] && [ "$FACEBOOK_TOKEN" ] && \
-[ "$TINDERPICS_DIR" ]; then scrape env > .tndrscrpr; fi }' >> ~/.bashrc
-
-# setup aliases
-RUN printf "\n# aliases\n" >> ~/.bashrc
-RUN echo "alias set_env='source .tndrscrpr'" >> ~/.bashrc
-
-# setup traps
-RUN printf "\n# traps\n" >> ~/.bashrc
-RUN echo "trap write_env EXIT" >> ~/.bashrc
-
-# setup final touches
-RUN printf "\n# extras\n" >> ~/.bashrc
-RUN echo 'if [ -e .tndrscrpr ]; then set_env; fi' >> ~/.bashrc
+# setup rc file
+COPY .bashrc /root/
 
 # make working dir
 RUN mkdir -p /home/tndrscrpr
