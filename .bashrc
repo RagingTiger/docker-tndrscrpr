@@ -36,10 +36,10 @@ picsdir(){
   fi 
 }
 
-get_token(){ 
-  if [ "$1" ]; then 
-    fbtoken $(extract_token "$1")
-  fi 
+set_token(){ 
+  local newresponse=${1:-$(response)}
+  nano $newresponse
+  fbtoken $(extract_token "$newresponse") && echo "Token updated successfully"
 }
 
 write_env(){ 
@@ -50,17 +50,16 @@ write_env(){
 
 # misc. functions
 response(){ 
-  if [ "$1" ]; then 
-    echo "$1" > response.$(date | awk '{print $2$3}')_$(date | \
-    awk '{print $4}' | sed 's/:/./g')
-  fi 
+  local filename="response.$(date | awk '{print $2$3}')_$(date | \
+  awk '{print $4}' | sed 's/:/./g')"
+  echo "$filename"
 }
 
 # aliases
-alias set_env='source .tndrscrpr'
+alias load_env='source .tndrscrpr'
 
 # traps
 trap write_env EXIT
 
 # extras
-if [ -e .tndrscrpr ]; then set_env; fi
+if [ -e .tndrscrpr ]; then load_env; fi
