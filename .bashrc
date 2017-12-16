@@ -31,8 +31,14 @@ fbtoken(){
 }
 
 picsdir(){
-  if [ "$1" ]; then 
+  # if argument passed
+  if [ "$1" ]; then
     export TINDERPICS_DIR="$1"
+
+    # if directory does not exist
+    if [ ! -e "$1" ]; then
+      mkdir -p "$1"
+    fi
   fi 
 }
 
