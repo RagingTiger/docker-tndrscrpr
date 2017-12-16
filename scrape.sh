@@ -42,7 +42,7 @@ if [ -z "$1" ]; then
 
 else
   case "$1" in
-    help|-h) echo "No help ATM :("
+    help|-h) echo "No help ATM";;
     doc|-d) pandoc /usr/src/README.md | lynx -stdin;;
     env|-e) export_env;;
     token|-t) cat /usr/src/README.md | grep '\[link\]' | \
