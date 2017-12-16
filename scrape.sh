@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# function
+# functions
 env_unset(){
   cat <<- EOF
 One or more of the shell environment variables has not been set. Here are
@@ -42,7 +42,8 @@ if [ -z "$1" ]; then
 
 else
   case "$1" in
-    help|-h) pandoc /usr/src/README.md | lynx -stdin;;
+    help|-h) echo "No help ATM :("
+    doc|-d) pandoc /usr/src/README.md | lynx -stdin;;
     env|-e) export_env;;
     token|-t) cat /usr/src/README.md | grep '\[link\]' | \
               sed 's/\[link\]/      /g' | awk '{print $9}' | sed 's/[()]//g';;

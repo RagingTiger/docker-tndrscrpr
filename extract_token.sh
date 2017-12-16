@@ -11,6 +11,7 @@ get_token(){
   echo "$token"
 }
 
+# main
 if [ "$1" ]; then
   # get token and export
   echo "$(get_token $1)"
