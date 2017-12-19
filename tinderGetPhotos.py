@@ -1,3 +1,4 @@
+# libs
 import requests
 import json
 import sys
@@ -11,19 +12,21 @@ from selenium.webdriver.common.keys import Keys
 
 '''
 For this script to run, the following must be specified, and the user must
-create an "imagePath" folder for the photos to be saved to.
+create an "IMG_PATH" folder for the photos to be saved to.
 '''
 
+# globals
 # Refer to README.md for how to get token
-facebook_token = os.environ.get('FACEBOOK_TOKEN')
+FBTOKEN = os.environ.get('FACEBOOK_TOKEN')
 
 # Refer to README.md for how to get facebook ID
-facebook_id = os.environ.get('FACEBOOK_ID')
+FBID = os.environ.get('FACEBOOK_ID')
 
-# Name of folder images save to
-imagePath = os.environ.get('TINDERPICS_DIR')
+# Name of folder to save images to
+IMG_PATH = os.environ.get('TINDERPICS_DIR')
 
 
+# functions
 def waitABit(minTime, maxTime):
     wait = random.uniform(minTime, maxTime)
     print("WAIT: " + str(wait) + "\n")
@@ -63,13 +66,10 @@ def tinderAPI_passSubject(subject, x_auth_token):
     r3 = requests.get('https://api.gotinder.com/pass/' + _id, headers=headers3)
 
 
-def getPics(x_auth_token):
+def getPics(x_auth_token, imagepath):
 
     # Get list of subjects
     subjects = tinderAPI_getSubjectList(x_auth_token)
-
-    # Get the number of photos in directory
-    processed_numPhotos = len([f for f in os.listdir(imagePath) if os.path.isfile(os.path.join(imagePath, f))])
 
     # Iterate through list of subjects
     for subject in subjects:
@@ -78,17 +78,19 @@ def getPics(x_auth_token):
         sid = subject['_id']
 
         # Gets a list of pictures of the subject
-        pictures = subject['photos']
+        pics = subject['photos']
 
         # Iterate through and save the pictures of the subject
-        for picIndex in range(len(pictures)):
+        for picIndex in range(len(pics)):
 
             # Get the URL for the largest cropped photo
-            processed_picURL = str(pictures[picIndex]['processedFiles'][0]['url'])
+            processed_picURL = str(pics[picIndex]['processedFiles'][0]['url'])
+
+            # unique image file name
+            img_name = imagepath + '/' + sid + '_' + str(picIndex) + '.jpg'
 
             # Get the photo and save
-            urllib.request.urlretrieve(processed_picURL, imagePath + '/' + sid + '_' + str(processed_numPhotos) + '.jpg')
-            processed_numPhotos += 1
+            urllib.request.urlretrieve(processed_picURL, img_name)
 
         # Wait some random amount of time and then pass the subject
         waitABit(0.5, 2.0)
@@ -97,10 +99,9 @@ def getPics(x_auth_token):
         tinderAPI_passSubject(subject, x_auth_token)
 
 
-if __name__ == '__main__':
-
+def main():
     # Log into Tinder
-    x_auth_token = tinderAPI_get_xAuthToken(facebook_token, facebook_id)
+    x_auth_token = tinderAPI _get_xAuthToken(FBTOKEN, FBID)
 
     # Get pics
     for i in range(10000):
@@ -110,9 +111,16 @@ if __name__ == '__main__':
 
         # Get one collection of subjects and their pictures
         try:
-            getPics(x_auth_token)
+            getPics(x_auth_token, IMG_PATH)
         except (urllib.error.HTTPError, KeyError) as err:
-            sys.exit('Token has expired :(')
+            sys.exit('Error occured: {0}'.format(err))
 
         # Wait a bit
         waitABit(0.25 * 60, 0.5 * 60)
+
+
+# executable
+if __name__ == '__main__':
+
+    # run main
+    main()
