@@ -7,8 +7,10 @@ import os
 import os.path
 import random
 import time
-from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
+
+# unused imports from original author
+# from selenium import webdriver
+# from selenium.webdriver.common.keys import Keys
 
 '''
 For this script to run, the following must be specified, and the user must
