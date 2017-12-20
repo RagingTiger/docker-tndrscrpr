@@ -89,7 +89,7 @@ def getPics(x_auth_token, imagepath):
             processed_picURL = str(pics[picIndex]['processedFiles'][0]['url'])
 
             # unique image file name
-            img_name = imagepath + '/' + sid + '_' + str(picIndex) + '.jpg'
+            img_name = imagepath + '/' + sid + '_' + str(picIndex + 1) + '.jpg'
 
             # Get the photo and save
             urllib.request.urlretrieve(processed_picURL, img_name)
@@ -103,7 +103,7 @@ def getPics(x_auth_token, imagepath):
 
 def main():
     # Log into Tinder
-    x_auth_token = tinderAPI _get_xAuthToken(FBTOKEN, FBID)
+    x_auth_token = tinderAPI_get_xAuthToken(FBTOKEN, FBID)
 
     # Get pics
     for i in range(10000):
