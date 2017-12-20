@@ -8,10 +8,6 @@ import os.path
 import random
 import time
 
-# unused imports from original author
-# from selenium import webdriver
-# from selenium.webdriver.common.keys import Keys
-
 '''
 For this script to run, the following must be specified, and the user must
 create an "IMG_PATH" folder for the photos to be saved to.
