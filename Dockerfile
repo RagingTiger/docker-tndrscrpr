@@ -15,17 +15,15 @@ RUN apt-get update && apt-get install -y \
 # copy source
 WORKDIR /usr/src
 COPY README.md .
-COPY tinderGetPhotos.py .
-COPY scrape.sh .
-COPY extract_token.sh .
-COPY requirements.txt .
+ADD python/ python/
+ADD shell/ shell/
 
 # install python requirements
-RUN pip install -r requirements.txt
+RUN pip install -r python/requirements.txt
 
 # link scripts
-RUN ln /usr/src/scrape.sh /usr/bin/scrape
-RUN ln /usr/src/extract_token.sh /usr/bin/extract_token
+RUN ln /usr/src/shell/scrape.sh /usr/bin/scrape
+RUN ln /usr/src/shell/extract_token.sh /usr/bin/extract_token
 
 # setup env
 ENV FACEBOOK_TOKEN=''
