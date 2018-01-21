@@ -34,7 +34,7 @@ if [ -z "$1" ]; then
 
   else
     # begin scraping
-    python /usr/src/tinderGetPhotos.py
+    python /usr/src/python/tinderGetPhotos.py
   fi
 
   # exit
